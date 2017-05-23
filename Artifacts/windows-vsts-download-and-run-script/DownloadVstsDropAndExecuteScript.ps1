@@ -23,6 +23,14 @@ param(
 
 Set-PSDebug -Strict
 
+$ErrorActionPreference = "Stop"
+
+trap
+{
+    $_ | Write-Error -ErrorAction Continue
+    exit 1
+}
+
 # VSTS Variables
 $vstsApiVersion = "2.0"
 
@@ -133,6 +141,7 @@ function RunScript
         Invoke-Expression  "& `"$scriptPath`" $scriptArguments"
     }
 }
+
 
 DownloadBuildArtifacts
 RunScript
